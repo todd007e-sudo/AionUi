@@ -143,8 +143,6 @@ class ConversionService {
       const pptx2json = new PPTX2Json();
       const json = await pptx2json.toJson(filePath);
 
-      console.log('[ConversionService] pptx2json raw result keys:', Object.keys(json));
-
       // 提取幻灯片信息 / Extract slide information
       const slides = [];
 
@@ -155,7 +153,6 @@ class ConversionService {
       for (const path of possiblePaths) {
         if (json[path]) {
           slidesData = json[path];
-          console.log(`[ConversionService] Found slides at path: ${path}`);
           break;
         }
       }
@@ -163,12 +160,9 @@ class ConversionService {
       // 如果上面的路径都找不到，尝试查找所有包含 'slide' 的键
       if (!slidesData) {
         const allKeys = Object.keys(json);
-        console.log('[ConversionService] All keys in json:', allKeys);
 
         // 查找所有以 slide 开头的键
         const slideKeys = allKeys.filter((key) => key.toLowerCase().includes('slide') && key.endsWith('.xml'));
-
-        console.log('[ConversionService] Found slide keys:', slideKeys);
 
         if (slideKeys.length > 0) {
           for (let i = 0; i < slideKeys.length; i++) {
@@ -180,7 +174,6 @@ class ConversionService {
         }
       } else if (typeof slidesData === 'object') {
         const slideFiles = Object.keys(slidesData).filter((key) => key.startsWith('slide') && key.endsWith('.xml'));
-        console.log('[ConversionService] Found slide files:', slideFiles);
 
         for (let i = 0; i < slideFiles.length; i++) {
           slides.push({
@@ -189,8 +182,6 @@ class ConversionService {
           });
         }
       }
-
-      console.log('[ConversionService] Total slides extracted:', slides.length);
 
       return {
         success: true,
