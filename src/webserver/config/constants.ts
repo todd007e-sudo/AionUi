@@ -173,6 +173,8 @@ export const SECURITY_CONFIG = {
     XSS_PROTECTION: '1; mode=block',
     // Referrer 策略（Referrer policy）
     REFERRER_POLICY: 'strict-origin-when-cross-origin',
+    // 禁止搜索引擎收录（Private site: noindex, nofollow）
+    ROBOTS_TAG: 'noindex, nofollow',
     // 开发环境 CSP（Content-Security-Policy for development）
     CSP_DEV: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' ws: wss: blob:; media-src 'self' blob:;",
     // 生产环境 CSP（Content-Security-Policy for production）
