@@ -57,7 +57,20 @@ export function extractContentFromDiff(diffContent: string): string {
 
   for (const line of lines) {
     // 跳过 diff 元数据行 / Skip diff metadata lines
-    if (line.startsWith('Index:') || line.match(/^={3,}/) || line.startsWith('diff --git') || line.startsWith('---') || line.startsWith('+++') || line.startsWith('@@')) {
+    if (
+      line.startsWith('Index:') ||
+      line.match(/^={3,}/) ||
+      line.startsWith('diff --git') ||
+      line.startsWith('index ') ||
+      line.startsWith('---') ||
+      line.startsWith('+++') ||
+      line.startsWith('@@') ||
+      line.startsWith('new file mode ') ||
+      line.startsWith('deleted file mode ') ||
+      line.startsWith('similarity index ') ||
+      line.startsWith('rename from ') ||
+      line.startsWith('rename to ')
+    ) {
       inDiffBlock = true;
       continue;
     }
@@ -70,6 +83,10 @@ export function extractContentFromDiff(diffContent: string): string {
       // 跳过删除行和上下文标记 / Skip deleted lines and context markers
       else if (line.startsWith('-') || line.startsWith('\\')) {
         continue;
+      }
+      // 上下文行（去掉开头的空格）/ Context lines (remove leading space)
+      else if (line.startsWith(' ')) {
+        contentLines.push(line.substring(1));
       }
       // 空行也保留 / Keep empty lines too
       else {
